@@ -37,7 +37,7 @@ public class GluApiTest {
         //Given Invalid RouteID
         List<BusStop> list = gluApi.getStopsByRouteId(ROUTE_ID_INVALID);
         //Then
-        Assert.assertEquals("Should return no data", ROUTE_ID_INVALID, list.size());
+        Assert.assertEquals("Should return no data", 0, list.size());
     }
 
     @Test
