@@ -1,15 +1,19 @@
 package com.github.andrezimmermann.gluappsample.server.data;
 
 
-public class FindRouteByNameParameter implements RequestData {
+public class FindRouteByNameParameter extends RequestData {
 
-    private String stopName;
+
 
     public FindRouteByNameParameter(String stopName) {
-        this.stopName = stopName;
+        getParams().put("stopName", stopName);
     }
 
     public String getStopName() {
-        return stopName;
+        if (getParams().containsKey("stopName")) {
+            return (String) getParams().get("stopName");
+        } else {
+            return null;
+        }
     }
 }

@@ -1,5 +1,7 @@
 package com.github.andrezimmermann.gluappsample.server.data;
 
+import android.test.suitebuilder.annotation.Smoke;
+
 import com.github.andrezimmermann.gluappsample.server.converter.JsonConverter;
 
 import org.junit.Before;
@@ -8,6 +10,7 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 
 
+@Smoke
 public class FindRouteByNameParameterTest {
 
     private JsonConverter converter;
