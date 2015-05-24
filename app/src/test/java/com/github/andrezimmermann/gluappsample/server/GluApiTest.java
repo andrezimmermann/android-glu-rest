@@ -4,8 +4,8 @@ package com.github.andrezimmermann.gluappsample.server;
 import com.github.andrezimmermann.gluappsample.server.api.GluApi;
 import com.github.andrezimmermann.gluappsample.server.api.error.ServiceUnavaiableException;
 import com.github.andrezimmermann.gluappsample.server.api.error.ServiceUnkownError;
+import com.github.andrezimmermann.gluappsample.shared.data.BusDeparture;
 import com.github.andrezimmermann.gluappsample.shared.data.BusLine;
-import com.github.andrezimmermann.gluappsample.shared.data.BusStop;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -25,9 +25,8 @@ public class GluApiTest {
 
     @Test
     public void shouldQueryStopsByRouteId() throws ServiceUnavaiableException, ServiceUnkownError {
-        List<BusStop> list = gluApi.getStopsByRouteId(35);
-
-
+        List<BusDeparture> list = gluApi.getDeparturesByRouteId(35);
+        Assert.assertEquals("Should return some data", 12, list.size());
     }
 
     @Test

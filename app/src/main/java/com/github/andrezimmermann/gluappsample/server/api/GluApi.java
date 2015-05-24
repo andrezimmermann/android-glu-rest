@@ -36,24 +36,40 @@ public class GluApi {
         FindRouteByNameResponse responseData = command.sendData(parameter);
 
 
-        List<FindRouteByNameResponse.FindRoundByNameRow> rows = responseData.getRows();
+        List<FindRouteByNameResponse.FindRouteByNameRow> rows = responseData.getRows();
 
-        return generateReturn(rows);
+        return generateReturnForId(rows);
 
 
     }
 
-    private List<BusLine> generateReturn(List<FindRouteByNameResponse.FindRoundByNameRow> rows) {
+    private List<BusLine> generateReturnForId(List<FindRouteByNameResponse.FindRouteByNameRow> rows) {
         if (rows == null) {
             return Collections.emptyList();
         } else {
             ArrayList<BusLine> list = new ArrayList<>(rows.size());
-            for (FindRouteByNameResponse.FindRoundByNameRow row : rows) {
+            for (FindRouteByNameResponse.FindRouteByNameRow row : rows) {
                 BusLine busLine = new BusLine();
                 busLine.setId(row.getId());
                 busLine.setNumberId(row.getShortName());
                 busLine.setDescription(row.getLongName());
                 list.add(busLine);
+            }
+            return list;
+        }
+    }
+
+    private List<BusStop> generateReturnForStop(List<FindStopsByRouteIdResponse.FindStopsByRouteIdRow> rows) {
+        if (rows == null) {
+            return Collections.emptyList();
+        } else {
+            ArrayList<BusStop> list = new ArrayList<>(rows.size());
+            for (FindStopsByRouteIdResponse.FindStopsByRouteIdRow row : rows) {
+                BusStop busStop = new BusStop();
+                busStop.setId(row.getId());
+                busStop.setName(row.getName());
+                busStop.setSequence(row.getSequence());
+                list.add(busStop);
             }
             return list;
         }
@@ -68,6 +84,9 @@ public class GluApi {
         FindStopsByRouteIdResponse responseData = command.sendData(parameter);
 
 
-        return null;
+        List<FindStopsByRouteIdResponse.FindStopsByRouteIdRow> rows = responseData.getRows();
+
+        return generateReturnForStop(rows);
+
     }
 }

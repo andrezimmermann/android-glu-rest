@@ -8,14 +8,14 @@ import java.util.List;
  */
 public class FindRouteByNameResponse implements ResponseData {
 
-    private List<FindRoundByNameRow> rows;
+    private List<FindRouteByNameRow> rows;
     private int rowsAffected;
 
-    public List<FindRoundByNameRow> getRows() {
+    public List<FindRouteByNameRow> getRows() {
         return rows;
     }
 
-    public void setRows(List<FindRoundByNameRow> rows) {
+    public void setRows(List<FindRouteByNameRow> rows) {
         this.rows = rows;
     }
 
@@ -27,7 +27,7 @@ public class FindRouteByNameResponse implements ResponseData {
         this.rowsAffected = rowsAffected;
     }
 
-    public class FindRoundByNameRow {
+    public class FindRouteByNameRow {
 
         private int id;
         private String shortName;
