@@ -38,6 +38,7 @@ dependencies {
     compile 'com.android.support:appcompat-v7:22.1.1'
 
     compile 'com.google.code.gson:gson:2.3.1'
+    compile 'commons-codec:commons-codec:1.9'
 
     //Conflict with expresso - temporary fix
     //Warning:Conflict with dependency 'com.android.support:support-annotations'. Resolved versions for app (22.1.1) and test app (22.0.0) differ.

@@ -1,15 +1,21 @@
-package com.github.andrezimmermann.gluappsample.server;
+package com.github.andrezimmermann.gluappsample.server.api.command;
 
 
-import android.util.Base64;
-
-import com.github.andrezimmermann.gluappsample.server.converter.RequestDataConverter;
+import com.github.andrezimmermann.gluappsample.server.api.Endpoint;
+import com.github.andrezimmermann.gluappsample.server.api.error.ServiceUnavaiableException;
+import com.github.andrezimmermann.gluappsample.server.api.error.ServiceUnkownError;
+import com.github.andrezimmermann.gluappsample.server.converter.DataConverter;
 import com.github.andrezimmermann.gluappsample.server.data.RequestData;
+import com.github.andrezimmermann.gluappsample.server.data.ResponseData;
+
+import org.apache.commons.codec.binary.Base64;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStreamWriter;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.ProtocolException;
 import java.net.URL;
@@ -22,24 +28,55 @@ import java.util.Set;
  *
  * @param <T> the kind of data it process
  */
-class RestConnection<T extends RequestData> {
+public class RestConnection<T extends RequestData<R>, R extends ResponseData> {
 
 
-    private RequestDataConverter converter;
+    private DataConverter converter;
     private String rootUrl = "https://api.appglu.com/v1/queries/";
     private HttpRequest httpRequest;
+    private Class<R> resultClass;
 
-    public RestConnection(Endpoint endpoint, RequestDataConverter converter) {
+    RestConnection(Endpoint endpoint, DataConverter converter) {
         this.converter = converter;
-        httpRequest = new HttpRequest(endpoint.getLocation()).
+        httpRequest = new HttpRequest(rootUrl + endpoint.getLocation()).
                 basicAuth("WKD4N7YMA1uiM8V", "DtdTtzMLQlA0hk2C1Yi5pLyVIlAQ68").header("X-AppGlu-Environment", "staging");
+
+        resultClass = findTypeParameters(getClass(), RestConnection.class)[1];
     }
 
-    public String sendData(T requestData) throws ServiceUnavaiableException, ServiceUnkownError {
+    public <S, B extends S> Class[] findTypeParameters(Class<B> base, Class<S> superClass) {
+        Class[] actuals = new Class[0];
+        for (Class clazz = base; !clazz.equals(superClass); clazz = clazz.getSuperclass()) {
+            if (!(clazz.getGenericSuperclass() instanceof ParameterizedType))
+                continue;
+
+            Type[] types = ((ParameterizedType) clazz.getGenericSuperclass()).getActualTypeArguments();
+            Class[] nextActuals = new Class[types.length];
+            for (int i = 0; i < types.length; i++)
+                if (types[i] instanceof Class)
+                    nextActuals[i] = (Class) types[i];
+                else
+                    nextActuals[i] = map(clazz.getTypeParameters(), types[i], actuals);
+            actuals = nextActuals;
+        }
+        return actuals;
+    }
+
+    private Class map(Object[] variables, Object variable, Class[] actuals) {
+        for (int i = 0; i < variables.length && i < actuals.length; i++)
+            if (variables[i].equals(variable))
+                return actuals[i];
+        return null;
+    }
+
+    public R sendData(T requestData) throws ServiceUnavaiableException, ServiceUnkownError {
         String data = converter.fromData(requestData);
 
 
-        return httpRequest.execute(data);
+        String result = httpRequest.execute(data);
+
+
+        return converter.toData(result, resultClass);
     }
 
     /**
@@ -196,12 +233,13 @@ class RestConnection<T extends RequestData> {
         }
 
         private boolean hasHeaders() {
-            return getHeaders().isEmpty();
+            return !getHeaders().isEmpty();
         }
 
         private void addAuthentication(HttpURLConnection connection) {
             String auth = new StringBuilder().append(user).append(":").append(password).toString();
-            String basicAuth = "Basic " + new String(Base64.encodeToString(auth.getBytes(), Base64.DEFAULT));
+
+            String basicAuth = "Basic " + new String(Base64.encodeBase64(auth.getBytes()));
             connection.setRequestProperty("Authorization", basicAuth);
         }
     }

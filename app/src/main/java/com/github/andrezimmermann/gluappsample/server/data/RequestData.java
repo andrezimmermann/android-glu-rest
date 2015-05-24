@@ -6,7 +6,7 @@ import java.util.Map;
 /**
  * Marker interface for Request Data to be consumed by the RestClient
  */
-public abstract class RequestData {
+public abstract class RequestData<R extends ResponseData> implements ConvertableData {
 
     Map<String, Object> params = new HashMap<>();
 

@@ -1,6 +1,6 @@
-package com.github.andrezimmermann.gluappsample.server;
+package com.github.andrezimmermann.gluappsample.server.api;
 
-enum Endpoint {
+public enum Endpoint {
 
     FIND_ROUTE_ID("findRoutesByStopName/run"),
     FIND_STOP("findStopsByRouteId/run"),
