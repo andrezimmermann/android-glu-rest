@@ -2,10 +2,10 @@ package com.github.andrezimmermann.gluappsample.server;
 
 
 import com.github.andrezimmermann.gluappsample.server.api.GluApi;
-import com.github.andrezimmermann.gluappsample.server.api.error.ServiceException;
 import com.github.andrezimmermann.gluappsample.shared.data.BusDeparture;
 import com.github.andrezimmermann.gluappsample.shared.data.BusLine;
 import com.github.andrezimmermann.gluappsample.shared.data.BusStop;
+import com.github.andrezimmermann.gluappsample.shared.error.ServiceException;
 
 import org.junit.Assert;
 import org.junit.Before;

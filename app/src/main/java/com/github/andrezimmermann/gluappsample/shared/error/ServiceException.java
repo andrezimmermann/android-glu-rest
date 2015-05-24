@@ -1,4 +1,4 @@
-package com.github.andrezimmermann.gluappsample.server.api.error;
+package com.github.andrezimmermann.gluappsample.shared.error;
 
 /**
  * Error on the Service

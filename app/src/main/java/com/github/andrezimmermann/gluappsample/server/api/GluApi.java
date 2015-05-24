@@ -4,7 +4,6 @@ package com.github.andrezimmermann.gluappsample.server.api;
 import com.github.andrezimmermann.gluappsample.server.api.command.FindByNameCommand;
 import com.github.andrezimmermann.gluappsample.server.api.command.FindDeparturesByRouteId;
 import com.github.andrezimmermann.gluappsample.server.api.command.FindStopsByRouteId;
-import com.github.andrezimmermann.gluappsample.server.api.error.ServiceException;
 import com.github.andrezimmermann.gluappsample.server.converter.DataConverter;
 import com.github.andrezimmermann.gluappsample.server.converter.JsonConverter;
 import com.github.andrezimmermann.gluappsample.server.data.FindDeparturesByRouteIdParameter;
@@ -16,6 +15,7 @@ import com.github.andrezimmermann.gluappsample.server.data.FindStopsByRouteIdRes
 import com.github.andrezimmermann.gluappsample.shared.data.BusDeparture;
 import com.github.andrezimmermann.gluappsample.shared.data.BusLine;
 import com.github.andrezimmermann.gluappsample.shared.data.BusStop;
+import com.github.andrezimmermann.gluappsample.shared.error.ServiceException;
 
 import java.util.ArrayList;
 import java.util.Collections;

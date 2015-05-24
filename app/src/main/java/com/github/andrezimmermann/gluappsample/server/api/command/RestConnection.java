@@ -2,10 +2,10 @@ package com.github.andrezimmermann.gluappsample.server.api.command;
 
 
 import com.github.andrezimmermann.gluappsample.server.api.Endpoint;
-import com.github.andrezimmermann.gluappsample.server.api.error.ServiceException;
 import com.github.andrezimmermann.gluappsample.server.converter.DataConverter;
 import com.github.andrezimmermann.gluappsample.server.data.RequestData;
 import com.github.andrezimmermann.gluappsample.server.data.ResponseData;
+import com.github.andrezimmermann.gluappsample.shared.error.ServiceException;
 
 import org.apache.commons.codec.binary.Base64;
 
