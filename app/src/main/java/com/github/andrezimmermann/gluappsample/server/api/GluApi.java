@@ -4,8 +4,7 @@ package com.github.andrezimmermann.gluappsample.server.api;
 import com.github.andrezimmermann.gluappsample.server.api.command.FindByNameCommand;
 import com.github.andrezimmermann.gluappsample.server.api.command.FindDeparturesByRouteId;
 import com.github.andrezimmermann.gluappsample.server.api.command.FindStopsByRouteId;
-import com.github.andrezimmermann.gluappsample.server.api.error.ServiceUnavaiableException;
-import com.github.andrezimmermann.gluappsample.server.api.error.ServiceUnkownError;
+import com.github.andrezimmermann.gluappsample.server.api.error.ServiceException;
 import com.github.andrezimmermann.gluappsample.server.converter.DataConverter;
 import com.github.andrezimmermann.gluappsample.server.converter.JsonConverter;
 import com.github.andrezimmermann.gluappsample.server.data.FindDeparturesByRouteIdParameter;
@@ -30,7 +29,7 @@ public class GluApi {
     private DataConverter converter = new JsonConverter();
 
 
-    public List<BusLine> getRouteIdByName(String routeName) throws ServiceUnavaiableException, ServiceUnkownError {
+    public List<BusLine> getRouteIdByName(String routeName) throws ServiceException {
         FindByNameCommand command = new FindByNameCommand(Endpoint.FIND_ROUTE_ID, converter);
         FindRouteByNameParameter parameter = new FindRouteByNameParameter(routeName);
         FindRouteByNameResponse responseData = command.sendData(parameter);
@@ -71,7 +70,7 @@ public class GluApi {
         }
     }
 
-    public List<BusStop> getStopsByRouteId(int routeId) throws ServiceUnavaiableException, ServiceUnkownError {
+    public List<BusStop> getStopsByRouteId(int routeId) throws ServiceException {
         FindStopsByRouteId command = new FindStopsByRouteId(Endpoint.FIND_STOP, converter);
         FindStopsByRouteIdParameter parameter = new FindStopsByRouteIdParameter(routeId);
         FindStopsByRouteIdResponse responseData = command.sendData(parameter);
@@ -81,7 +80,7 @@ public class GluApi {
 
     }
 
-    public List<BusDeparture> getDeparturesByRouteId(int routeId) throws ServiceUnavaiableException, ServiceUnkownError {
+    public List<BusDeparture> getDeparturesByRouteId(int routeId) throws ServiceException {
         FindDeparturesByRouteId command = new FindDeparturesByRouteId(Endpoint.FIND_DEPARTURE, converter);
         FindDeparturesByRouteIdParameter parameter = new FindDeparturesByRouteIdParameter(routeId);
         FindDeparturesByRouteIdResponse responseData = command.sendData(parameter);

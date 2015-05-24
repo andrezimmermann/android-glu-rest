@@ -2,8 +2,7 @@ package com.github.andrezimmermann.gluappsample.server.api.command;
 
 
 import com.github.andrezimmermann.gluappsample.server.api.Endpoint;
-import com.github.andrezimmermann.gluappsample.server.api.error.ServiceUnavaiableException;
-import com.github.andrezimmermann.gluappsample.server.api.error.ServiceUnkownError;
+import com.github.andrezimmermann.gluappsample.server.api.error.ServiceException;
 import com.github.andrezimmermann.gluappsample.server.converter.DataConverter;
 import com.github.andrezimmermann.gluappsample.server.data.RequestData;
 import com.github.andrezimmermann.gluappsample.server.data.ResponseData;
@@ -71,7 +70,7 @@ public class RestConnection<T extends RequestData<R>, R extends ResponseData> {
     }
     //end helper
 
-    public R sendData(T requestData) throws ServiceUnavaiableException, ServiceUnkownError {
+    public R sendData(T requestData) throws ServiceException {
         String data = converter.fromData(requestData);
 
 
@@ -116,7 +115,7 @@ public class RestConnection<T extends RequestData<R>, R extends ResponseData> {
             return headers;
         }
 
-        public String execute(String data) throws ServiceUnavaiableException, ServiceUnkownError {
+        public String execute(String data) throws ServiceException {
             HttpURLConnection connection = null;
             try {
                 URL url = new URL(this.url);
@@ -138,9 +137,9 @@ public class RestConnection<T extends RequestData<R>, R extends ResponseData> {
                 return getInputDataFromStream(connection);
 
             } catch (ProtocolException e) {
-                throw new ServiceUnkownError();
+                throw new ServiceException(e);
             } catch (IOException e) {
-                throw new ServiceUnavaiableException("Failed to connect to service", e);
+                throw new ServiceException("Failed to connect to service", e);
             } finally {
                 if (connection != null) {
                     connection.disconnect();
@@ -151,7 +150,7 @@ public class RestConnection<T extends RequestData<R>, R extends ResponseData> {
 
         }
 
-        private String getInputDataFromStream(HttpURLConnection connection) throws ServiceUnavaiableException {
+        private String getInputDataFromStream(HttpURLConnection connection) throws ServiceException {
 
             int code = getCodeFromConnection(connection);
 
@@ -161,25 +160,25 @@ public class RestConnection<T extends RequestData<R>, R extends ResponseData> {
 
                 String errorResponse = getMessageFromErrorStream(connection);
 
-                throw new ServiceUnavaiableException(errorResponse);
+                throw new ServiceException(errorResponse);
             }
 
 
         }
 
-        private String getMessageFromInputStream(HttpURLConnection connection) throws ServiceUnavaiableException {
+        private String getMessageFromInputStream(HttpURLConnection connection) throws ServiceException {
             try {
                 return getMessageFromStream(connection.getInputStream());
             } catch (IOException e) {
-                throw new ServiceUnavaiableException(e);
+                throw new ServiceException(e);
             }
         }
 
-        private String getMessageFromErrorStream(HttpURLConnection connection) throws ServiceUnavaiableException {
+        private String getMessageFromErrorStream(HttpURLConnection connection) throws ServiceException {
             return getMessageFromStream(connection.getErrorStream());
         }
 
-        private String getMessageFromStream(InputStream stream) throws ServiceUnavaiableException {
+        private String getMessageFromStream(InputStream stream) throws ServiceException {
             try {
                 ByteArrayOutputStream baos = new ByteArrayOutputStream(8192);
                 byte[] buffer = new byte[8192];
@@ -191,16 +190,16 @@ public class RestConnection<T extends RequestData<R>, R extends ResponseData> {
 
                 return baos.toString();
             } catch (IOException e) {
-                throw new ServiceUnavaiableException(e);
+                throw new ServiceException(e);
             }
         }
 
-        private int getCodeFromConnection(HttpURLConnection connection) throws ServiceUnavaiableException {
+        private int getCodeFromConnection(HttpURLConnection connection) throws ServiceException {
             int code = 0;
             try {
                 code = connection.getResponseCode();
             } catch (IOException e) {
-                throw new ServiceUnavaiableException(e);
+                throw new ServiceException(e);
             }
             return code;
         }

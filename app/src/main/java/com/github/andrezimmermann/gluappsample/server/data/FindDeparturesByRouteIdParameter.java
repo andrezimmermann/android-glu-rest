@@ -3,18 +3,21 @@ package com.github.andrezimmermann.gluappsample.server.data;
 /**
  * TODO: add javadoc
  */
-public class FindDeparturesByRouteIdParameter extends RequestData<FindDeparturesByRouteIdResponse> {
+public class FindDeparturesByRouteIdParameter implements RequestData<FindDeparturesByRouteIdResponse> {
+
+    private RouteIdValue params = new RouteIdValue();
+
 
     public FindDeparturesByRouteIdParameter(int routeId) {
         setRouteId(routeId);
     }
 
     public int getRouteId() {
-        return getFromParameter("routeId");
+        return params.getRouteId();
     }
 
     public void setRouteId(int routeId) {
-        getParams().put("routeId", routeId);
+        this.params.setRouteId(routeId);
     }
 
 

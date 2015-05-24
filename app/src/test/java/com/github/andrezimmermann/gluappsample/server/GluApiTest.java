@@ -2,8 +2,7 @@ package com.github.andrezimmermann.gluappsample.server;
 
 
 import com.github.andrezimmermann.gluappsample.server.api.GluApi;
-import com.github.andrezimmermann.gluappsample.server.api.error.ServiceUnavaiableException;
-import com.github.andrezimmermann.gluappsample.server.api.error.ServiceUnkownError;
+import com.github.andrezimmermann.gluappsample.server.api.error.ServiceException;
 import com.github.andrezimmermann.gluappsample.shared.data.BusDeparture;
 import com.github.andrezimmermann.gluappsample.shared.data.BusLine;
 import com.github.andrezimmermann.gluappsample.shared.data.BusStop;
@@ -16,6 +15,8 @@ import java.util.List;
 
 public class GluApiTest {
 
+    public static final int ROUTE_ID_INVALID = -1;
+    public static final int ROUTE_ID_VALID = 35;
     private GluApi gluApi;
 
     @Before
@@ -23,19 +24,33 @@ public class GluApiTest {
         gluApi = new GluApi();
     }
 
-    @Test
-    public void shouldQueryStopsByRouteId() throws ServiceUnavaiableException, ServiceUnkownError {
-        List<BusStop> list = gluApi.getStopsByRouteId(35);
+
+    public void shouldQueryStopsByRouteId() throws ServiceException {
+        List<BusStop> list = gluApi.getStopsByRouteId(ROUTE_ID_VALID);
         Assert.assertEquals("Should return some data", 12, list.size());
+
+
     }
 
     @Test
-    public void shouldQueryDeparturesByRouteId() throws ServiceUnavaiableException, ServiceUnkownError {
-        List<BusDeparture> list = gluApi.getDeparturesByRouteId(35);
+    public void shouldQueryInvalidStopsByRouteId() throws ServiceException {
+        //Given Invalid RouteID
+        List<BusStop> list = gluApi.getStopsByRouteId(ROUTE_ID_INVALID);
+        //Then
+        Assert.assertEquals("Should return no data", ROUTE_ID_INVALID, list.size());
+    }
+
+    @Test
+    public void shouldQueryDeparturesByRouteId() throws ServiceException {
+        List<BusDeparture> list = gluApi.getDeparturesByRouteId(ROUTE_ID_VALID);
         Assert.assertEquals("Should return some data", 104, list.size());
+
+
+        list = gluApi.getDeparturesByRouteId(ROUTE_ID_INVALID);
+        Assert.assertEquals("Should return no data", 0, list.size());
     }
     @Test
-    public void shouldQueryRouteId() throws ServiceUnavaiableException, ServiceUnkownError {
+    public void shouldQueryRouteId() throws ServiceException {
         List<BusLine> list = gluApi.getRouteIdByName("Delminda Silveira");
         Assert.assertEquals("Should return some data", 2, list.size());
 
