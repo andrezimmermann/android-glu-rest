@@ -14,5 +14,13 @@ public abstract class RequestData<R extends ResponseData> implements Convertable
         return params;
     }
 
+    protected <T> T getFromParameter(String parameterName) {
+        if (getParams().containsKey("parameterName")) {
+            return (T) getParams().get("parameterName");
+        } else {
+            return null;
+        }
+    }
+
 
 }

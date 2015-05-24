@@ -2,13 +2,17 @@ package com.github.andrezimmermann.gluappsample.server.api;
 
 
 import com.github.andrezimmermann.gluappsample.server.api.command.FindByNameCommand;
+import com.github.andrezimmermann.gluappsample.server.api.command.FindStopsByRouteId;
 import com.github.andrezimmermann.gluappsample.server.api.error.ServiceUnavaiableException;
 import com.github.andrezimmermann.gluappsample.server.api.error.ServiceUnkownError;
 import com.github.andrezimmermann.gluappsample.server.converter.DataConverter;
 import com.github.andrezimmermann.gluappsample.server.converter.JsonConverter;
 import com.github.andrezimmermann.gluappsample.server.data.FindRouteByNameParameter;
 import com.github.andrezimmermann.gluappsample.server.data.FindRouteByNameResponse;
-import com.github.andrezimmermann.gluappsample.shared.data.LinhaOnibus;
+import com.github.andrezimmermann.gluappsample.server.data.FindStopsByRouteIdParameter;
+import com.github.andrezimmermann.gluappsample.server.data.FindStopsByRouteIdResponse;
+import com.github.andrezimmermann.gluappsample.shared.data.BusLine;
+import com.github.andrezimmermann.gluappsample.shared.data.BusStop;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -22,7 +26,7 @@ public class GluApi {
     private DataConverter converter = new JsonConverter();
 
 
-    public List<LinhaOnibus> getRouteIdByName(String routeName) throws ServiceUnavaiableException, ServiceUnkownError {
+    public List<BusLine> getRouteIdByName(String routeName) throws ServiceUnavaiableException, ServiceUnkownError {
 
 
         FindByNameCommand command = new FindByNameCommand(Endpoint.FIND_ROUTE_ID, converter);
@@ -34,20 +38,36 @@ public class GluApi {
 
         List<FindRouteByNameResponse.FindRoundByNameRow> rows = responseData.getRows();
 
+        return generateReturn(rows);
+
+
+    }
+
+    private List<BusLine> generateReturn(List<FindRouteByNameResponse.FindRoundByNameRow> rows) {
         if (rows == null) {
             return Collections.emptyList();
         } else {
-            ArrayList<LinhaOnibus> retorno = new ArrayList<>(rows.size());
+            ArrayList<BusLine> list = new ArrayList<>(rows.size());
             for (FindRouteByNameResponse.FindRoundByNameRow row : rows) {
-                LinhaOnibus linhaOnibus = new LinhaOnibus();
-                linhaOnibus.setId(row.getId());
-                linhaOnibus.setCodigo(row.getShortName());
-                linhaOnibus.setDescrica(row.getLongName());
-                retorno.add(linhaOnibus);
+                BusLine busLine = new BusLine();
+                busLine.setId(row.getId());
+                busLine.setNumberId(row.getShortName());
+                busLine.setDescription(row.getLongName());
+                list.add(busLine);
             }
-            return retorno;
+            return list;
         }
+    }
+
+    public List<BusStop> getStopsByRouteId(int routeId) throws ServiceUnavaiableException, ServiceUnkownError {
+
+        FindStopsByRouteId command = new FindStopsByRouteId(Endpoint.FIND_STOP, converter);
+
+        FindStopsByRouteIdParameter parameter = new FindStopsByRouteIdParameter(routeId);
+
+        FindStopsByRouteIdResponse responseData = command.sendData(parameter);
 
 
+        return null;
     }
 }

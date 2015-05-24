@@ -44,6 +44,7 @@ public class RestConnection<T extends RequestData<R>, R extends ResponseData> {
         resultClass = findTypeParameters(getClass(), RestConnection.class)[1];
     }
 
+    //Reflection helper, to get type parameters
     public <S, B extends S> Class[] findTypeParameters(Class<B> base, Class<S> superClass) {
         Class[] actuals = new Class[0];
         for (Class clazz = base; !clazz.equals(superClass); clazz = clazz.getSuperclass()) {
@@ -68,6 +69,7 @@ public class RestConnection<T extends RequestData<R>, R extends ResponseData> {
                 return actuals[i];
         return null;
     }
+    //end helper
 
     public R sendData(T requestData) throws ServiceUnavaiableException, ServiceUnkownError {
         String data = converter.fromData(requestData);
@@ -209,7 +211,7 @@ public class RestConnection<T extends RequestData<R>, R extends ResponseData> {
             connection.setRequestProperty("Content-Length", "" + Integer.toString(data.getBytes().length));
             connection.setRequestProperty("Content-Language", "pt-BR");
             connection.setRequestMethod("POST");
-            connection.setUseCaches(false);
+            connection.setUseCaches(true);
             connection.setDoInput(true);
             connection.setDoOutput(true);
         }

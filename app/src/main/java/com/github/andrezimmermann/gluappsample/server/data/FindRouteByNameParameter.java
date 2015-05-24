@@ -8,10 +8,6 @@ public class FindRouteByNameParameter extends RequestData<FindRouteByNameRespons
     }
 
     public String getStopName() {
-        if (getParams().containsKey("stopName")) {
-            return (String) getParams().get("stopName");
-        } else {
-            return null;
-        }
+        return getFromParameter("stopName");
     }
 }
