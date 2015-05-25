@@ -6,6 +6,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -16,6 +17,8 @@ import com.github.andrezimmermann.gluappsample.client.list.ListPresenter;
 import com.github.andrezimmermann.gluappsample.client.list.RouteListView;
 import com.github.andrezimmermann.gluappsample.client.mvp.event.ClickHandler;
 import com.github.andrezimmermann.gluappsample.client.mvp.event.HasClickHandlers;
+import com.github.andrezimmermann.gluappsample.client.mvp.event.HasListItemSelectionHandlers;
+import com.github.andrezimmermann.gluappsample.client.mvp.event.ListItemSelectionHandler;
 import com.github.andrezimmermann.gluappsample.client.widgets.SimpleAdapter;
 import com.github.andrezimmermann.gluappsample.server.api.GluApi;
 import com.github.andrezimmermann.gluappsample.shared.data.BusLine;
@@ -120,6 +123,31 @@ public class RouteListActivity extends ActionBarActivity implements RouteListVie
         busListView.setAdapter(adapter);
 
 
+    }
+
+    @Override
+    public HasListItemSelectionHandlers getBusListSelecion() {
+        HasListItemSelectionHandlers handlers = new HasListItemSelectionHandlers() {
+            @Override
+            public void addListItemSelecionHandler(final ListItemSelectionHandler handler) {
+
+                getBusRouteList().setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        BusLine selectedItem = (BusLine) parent.getItemAtPosition(position);
+
+                        handler.onListSelecion(selectedItem);
+                    }
+                });
+
+            }
+        };
+        return handlers;
+    }
+
+    @Override
+    public void showDetails(BusLine data) {
+        Toast.makeText(getApplicationContext(), "Hello Bus: " + data.getDescription(), Toast.LENGTH_LONG);
     }
 
     private ListView getBusRouteList() {

@@ -46,6 +46,8 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/btQuery" />
+        android:layout_below="@+id/btQuery"
+        android:choiceMode="singleChoice"
+        android:clickable="true" />
 
 </RelativeLayout>

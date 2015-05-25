@@ -45,6 +45,14 @@ public class ListPresenter extends AbstractSimplePresenter<RouteListView> {
                 }
 
         );
+
+        view.getBusListSelecion().addListItemSelecionHandler(new BusLineSelecionHandler() {
+
+            @Override
+            public void onListSelecion(BusLine data) {
+                view.showDetails(data);
+            }
+        });
     }
 
     private void queryRouteIdByName(String text, final RouteListView view) {
