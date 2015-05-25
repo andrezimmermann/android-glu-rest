@@ -23,18 +23,10 @@ public class Presenter extends AbstractSimplePresenter<RouteDetailView> implemen
 
     @Override
     protected void onCreate(RouteDetailView view) {
-
+        //NOOP
     }
 
-    @Override
-    protected void onResume(RouteDetailView view) {
 
-    }
-
-    @Override
-    protected void onPause(RouteDetailView view) {
-
-    }
 
     @Override
     public void onDetailRequest(int id, String description) {

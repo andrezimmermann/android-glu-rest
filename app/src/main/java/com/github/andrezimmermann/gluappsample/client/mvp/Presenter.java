@@ -10,7 +10,4 @@ public interface Presenter<V extends View> {
     void onCreate();
 
 
-    void onResume();
-
-    void onPause();
 }

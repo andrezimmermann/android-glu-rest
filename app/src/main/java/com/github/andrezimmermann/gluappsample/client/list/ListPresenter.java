@@ -73,15 +73,7 @@ public class ListPresenter extends AbstractSimplePresenter<RouteListView> {
         service.getRouteIdByName(callback, text);
     }
 
-    @Override
-    protected void onResume(RouteListView view) {
-        //NOOP
-    }
 
-    @Override
-    protected void onPause(RouteListView view) {
-        //NOOP
-    }
 
 
 }

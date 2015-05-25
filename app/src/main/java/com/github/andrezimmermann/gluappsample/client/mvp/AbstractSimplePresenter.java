@@ -14,24 +14,13 @@ public abstract class AbstractSimplePresenter<V extends View> implements Present
 
     protected abstract void onCreate(V view);
 
-    protected abstract void onResume(V view);
 
-    protected abstract void onPause(V view);
 
     @Override
     public void onCreate() {
         onCreate(getView());
     }
 
-    @Override
-    public void onResume() {
-        onResume(getView());
-    }
-
-    @Override
-    public void onPause() {
-        onPause(getView());
-    }
 
     @Override
     public V getView() {
