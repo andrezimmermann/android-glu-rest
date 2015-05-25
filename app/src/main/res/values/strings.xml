@@ -4,7 +4,7 @@
     <string name="list_query_description">Search a route by name or number:</string>
     <string name="action_settings">Settings</string>
     <string name="list_query_button">OK</string>
-    <string name="list_query_empty_error">Must provide a stop name or number</string>
+    <string name="list_query_empty_error">Must provide a road name or number</string>
     <string name="title_activity_detail">Details</string>
 
 

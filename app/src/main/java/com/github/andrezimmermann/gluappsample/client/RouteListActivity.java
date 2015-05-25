@@ -29,13 +29,14 @@ import java.util.List;
 @SuppressWarnings("deprecation")
 public class RouteListActivity extends ActionBarActivity implements RouteListView {
 
-
+    public static final String ROAD = "com.github.andrezimmermann.gluappsample.client.RouteListActivity.ROAD";
     public static final String ROUTE_ID = "com.github.andrezimmermann.gluappsample.client.RouteListActivity.ROUTE_ID";
     public static final String FULL_DESCRIPTION = "com.github.andrezimmermann.gluappsample.client.RouteListActivity.FULL_DESCRIPTION";
 
     private ProgressDialog progressDialog;
     private ListPresenter presenter;
     private GluApi service;
+    private String currentRoad;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +46,14 @@ public class RouteListActivity extends ActionBarActivity implements RouteListVie
         service = GluApiSingleton.getInstance();
 
         presenter = new ListPresenter(this, service);
+
+        if (savedInstanceState != null) {
+            // Restore state members from saved instance
+            currentRoad = savedInstanceState.getString(ROAD);
+
+            getQueryInput().setText(currentRoad);
+            presenter.queryRouteIdByName(currentRoad, this);
+        }
     }
 
 
@@ -104,6 +113,14 @@ public class RouteListActivity extends ActionBarActivity implements RouteListVie
     }
 
     @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        savedInstanceState.putString(ROAD, getQueryInputText());
+
+        super.onSaveInstanceState(savedInstanceState);
+    }
+
+
+    @Override
     public HasListItemSelectionHandlers getBusListSelecion() {
         HasListItemSelectionHandlers handlers = new HasListItemSelectionHandlers() {
             @Override
@@ -125,8 +142,8 @@ public class RouteListActivity extends ActionBarActivity implements RouteListVie
 
     @Override
     public void showDetails(BusLine data) {
-
         Intent intent = new Intent(this, DetailActivity.class);
+
         intent.putExtra(ROUTE_ID, data.getId());
 
         String fullDescription = new StringBuilder().append(data.getNumberId()).append(" - ").append(data.getDescription()).toString();

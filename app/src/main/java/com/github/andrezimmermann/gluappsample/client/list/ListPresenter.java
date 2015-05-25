@@ -55,7 +55,7 @@ public class ListPresenter extends AbstractSimplePresenter<RouteListView> {
         });
     }
 
-    private void queryRouteIdByName(String text, final RouteListView view) {
+    public void queryRouteIdByName(String text, final RouteListView view) {
         ServiceCallback<List<BusLine>> callback = new ServiceCallback<List<BusLine>>(view) {
 
             @Override
