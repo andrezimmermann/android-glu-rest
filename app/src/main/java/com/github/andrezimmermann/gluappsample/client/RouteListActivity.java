@@ -8,13 +8,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.github.andrezimmermann.gluappsample.R;
 import com.github.andrezimmermann.gluappsample.client.list.ListPresenter;
-import com.github.andrezimmermann.gluappsample.client.list.ListView;
+import com.github.andrezimmermann.gluappsample.client.list.RouteListView;
 import com.github.andrezimmermann.gluappsample.client.mvp.event.ClickHandler;
 import com.github.andrezimmermann.gluappsample.client.mvp.event.HasClickHandlers;
+import com.github.andrezimmermann.gluappsample.client.widgets.SimpleAdapter;
 import com.github.andrezimmermann.gluappsample.server.api.GluApi;
 import com.github.andrezimmermann.gluappsample.shared.data.BusLine;
 
@@ -22,7 +24,7 @@ import java.util.List;
 
 
 @SuppressWarnings("deprecation")
-public class ListActivity extends ActionBarActivity implements ListView {
+public class RouteListActivity extends ActionBarActivity implements RouteListView {
 
     ProgressDialog progressDialog;
     private ListPresenter presenter;
@@ -103,8 +105,25 @@ public class ListActivity extends ActionBarActivity implements ListView {
     }
 
     @Override
-    public void showResult(List<BusLine> routes) {
-        Toast.makeText(getApplicationContext(), "Hello Routes!" + routes.size(), Toast.LENGTH_LONG).show();
+    public void showResult(List<BusLine> busLines) {
+        ListView busListView = getBusRouteList();
+
+
+        SimpleAdapter<BusLine> adapter = new SimpleAdapter<BusLine>(this, R.layout.list_item, busLines) {
+
+            @Override
+            protected String getTextFromData(BusLine objectItem) {
+                return new StringBuilder().append(objectItem.getNumberId()).append(" - ").append(objectItem.getDescription()).toString();
+            }
+        };
+
+        busListView.setAdapter(adapter);
+
+
+    }
+
+    private ListView getBusRouteList() {
+        return (ListView) findViewById(R.id.busRouteList);
     }
 
 

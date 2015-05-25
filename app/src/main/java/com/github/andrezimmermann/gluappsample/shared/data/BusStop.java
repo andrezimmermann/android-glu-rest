@@ -3,19 +3,11 @@ package com.github.andrezimmermann.gluappsample.shared.data;
 /**
  * TODO: add javadoc
  */
-public class BusStop {
+public class BusStop extends IdentityObject {
 
-    private int id;
     private int sequence;
     private String name;
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
 
     public int getSequence() {
         return sequence;

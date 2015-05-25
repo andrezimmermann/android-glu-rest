@@ -3,19 +3,12 @@ package com.github.andrezimmermann.gluappsample.shared.data;
 /**
  * TODO: add javadoc
  */
-public class BusDeparture {
+public class BusDeparture extends IdentityObject {
 
-    private int id;
     private String calendar;
     private String time;
 
-    public int getId() {
-        return id;
-    }
 
-    public void setId(int id) {
-        this.id = id;
-    }
 
     public String getCalendar() {
         return calendar;

@@ -10,14 +10,13 @@ import java.util.List;
 /**
  * TODO: add javadoc
  */
-public interface ListView extends View, HasProgressIndicator {
+public interface RouteListView extends View, HasProgressIndicator {
 
     HasClickHandlers getQueryButtonClick();
 
     void setQueryBlankError();
 
     String getQueryInputText();
-
 
     void setServiceError();
 

@@ -3,22 +3,13 @@ package com.github.andrezimmermann.gluappsample.shared.data;
 /**
  * TODO: add javadoc
  */
-public class BusLine {
+public class BusLine extends IdentityObject {
 
-    private int id;
     /**
      * Numerical Identification of the bus line
      */
     private String numberId;
     private String description;
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
 
     public String getNumberId() {
         return numberId;

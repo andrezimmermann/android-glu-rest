@@ -13,18 +13,18 @@ import java.util.List;
 /**
  * TODO: add javadoc
  */
-public class ListPresenter extends AbstractSimplePresenter<ListView> {
+public class ListPresenter extends AbstractSimplePresenter<RouteListView> {
 
 
     private final ServiceExecutor service;
 
-    public ListPresenter(ListView view, GluApi service) {
+    public ListPresenter(RouteListView view, GluApi service) {
         super(view);
         this.service = new ServiceExecutor(service);
     }
 
     @Override
-    protected void onCreate(final ListView view) {
+    protected void onCreate(final RouteListView view) {
         view.getQueryButtonClick().addClickHandler(
 
                 new ClickHandler() {
@@ -47,7 +47,7 @@ public class ListPresenter extends AbstractSimplePresenter<ListView> {
         );
     }
 
-    private void queryRouteIdByName(String text, final ListView view) {
+    private void queryRouteIdByName(String text, final RouteListView view) {
         ServiceCallback<List<BusLine>> callback = new ServiceCallback<List<BusLine>>(view) {
 
             @Override
@@ -66,12 +66,12 @@ public class ListPresenter extends AbstractSimplePresenter<ListView> {
     }
 
     @Override
-    protected void onResume(ListView view) {
+    protected void onResume(RouteListView view) {
         //NOOP
     }
 
     @Override
-    protected void onPause(ListView view) {
+    protected void onPause(RouteListView view) {
         //NOOP
     }
 

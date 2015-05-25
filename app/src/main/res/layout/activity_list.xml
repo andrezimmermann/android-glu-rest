@@ -15,7 +15,7 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:text="@string/list_query_description"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:textAppearance="?android:attr/textAppearanceSmall" />
 
     <EditText
         android:id="@+id/txtQuery"
@@ -36,5 +36,16 @@
         android:layout_alignParentRight="true"
         android:layout_below="@+id/textView"
         android:text="@string/list_query_button" />
+
+    <ListView
+        android:id="@+id/busRouteList"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/btQuery" />
 
 </RelativeLayout>
