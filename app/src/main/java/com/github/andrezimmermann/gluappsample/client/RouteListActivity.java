@@ -1,6 +1,7 @@
 package com.github.andrezimmermann.gluappsample.client;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
@@ -19,6 +20,7 @@ import com.github.andrezimmermann.gluappsample.client.mvp.event.ClickHandler;
 import com.github.andrezimmermann.gluappsample.client.mvp.event.HasClickHandlers;
 import com.github.andrezimmermann.gluappsample.client.mvp.event.HasListItemSelectionHandlers;
 import com.github.andrezimmermann.gluappsample.client.mvp.event.ListItemSelectionHandler;
+import com.github.andrezimmermann.gluappsample.client.service.GluApiSingleton;
 import com.github.andrezimmermann.gluappsample.client.widgets.SimpleAdapter;
 import com.github.andrezimmermann.gluappsample.server.api.GluApi;
 import com.github.andrezimmermann.gluappsample.shared.data.BusLine;
@@ -29,7 +31,11 @@ import java.util.List;
 @SuppressWarnings("deprecation")
 public class RouteListActivity extends ActionBarActivity implements RouteListView {
 
-    ProgressDialog progressDialog;
+
+    public static final String ROUTE_ID = "com.github.andrezimmermann.gluappsample.client.RouteListActivity.ROUTE_ID";
+    public static final String FULL_DESCRIPTION = "com.github.andrezimmermann.gluappsample.client.RouteListActivity.FULL_DESCRIPTION";
+
+    private ProgressDialog progressDialog;
     private ListPresenter presenter;
     private GluApi service;
 
@@ -38,7 +44,7 @@ public class RouteListActivity extends ActionBarActivity implements RouteListVie
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
 
-        service = new GluApi();
+        service = GluApiSingleton.getInstance();
 
         presenter = new ListPresenter(this, service);
     }
@@ -112,13 +118,7 @@ public class RouteListActivity extends ActionBarActivity implements RouteListVie
         ListView busListView = getBusRouteList();
 
 
-        SimpleAdapter<BusLine> adapter = new SimpleAdapter<BusLine>(this, R.layout.list_item, busLines) {
-
-            @Override
-            protected String getTextFromData(BusLine objectItem) {
-                return new StringBuilder().append(objectItem.getNumberId()).append(" - ").append(objectItem.getDescription()).toString();
-            }
-        };
+        SimpleAdapter<BusLine> adapter = new BusLineSimpleAdapter(busLines);
 
         busListView.setAdapter(adapter);
 
@@ -147,7 +147,15 @@ public class RouteListActivity extends ActionBarActivity implements RouteListVie
 
     @Override
     public void showDetails(BusLine data) {
-        Toast.makeText(getApplicationContext(), "Hello Bus: " + data.getDescription(), Toast.LENGTH_LONG);
+
+        Intent intent = new Intent(this, DetailActivity.class);
+        intent.putExtra(ROUTE_ID, data.getId());
+
+        String fullDescription = new StringBuilder().append(data.getNumberId()).append(" - ").append(data.getDescription()).toString();
+        intent.putExtra(FULL_DESCRIPTION,
+                fullDescription);
+
+        startActivity(intent);
     }
 
     private ListView getBusRouteList() {
@@ -159,6 +167,7 @@ public class RouteListActivity extends ActionBarActivity implements RouteListVie
     public void startProgress() {
         if (progressDialog == null) {
             progressDialog = new ProgressDialog(this);
+            progressDialog.setMessage("Loading");
             progressDialog.show();
             progressDialog.setCanceledOnTouchOutside(false);
             progressDialog.setCancelable(false);
@@ -170,6 +179,18 @@ public class RouteListActivity extends ActionBarActivity implements RouteListVie
     public void stopProgress() {
         if (progressDialog.isShowing()) {
             progressDialog.dismiss();
+        }
+    }
+
+    private class BusLineSimpleAdapter extends SimpleAdapter<BusLine> {
+
+        public BusLineSimpleAdapter(List<BusLine> busLines) {
+            super(RouteListActivity.this, R.layout.list_item, busLines);
+        }
+
+        @Override
+        protected String getTextFromData(BusLine objectItem) {
+            return new StringBuilder().append(objectItem.getNumberId()).append(" - ").append(objectItem.getDescription()).toString();
         }
     }
 }
