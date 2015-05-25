@@ -8,13 +8,19 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.github.andrezimmermann.gluappsample.client.DetailActivity">
 
-
-    <LinearLayout
-        android:id="@+id/linearLayout"
+    <ViewFlipper
+        android:id="@+id/detail_flipper"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="10dip">
+        android:layout_height="wrap_content">
+
+
+        <LinearLayout
+            android:id="@+id/stopLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="10dip">
+
 
         <TextView
             android:id="@+id/txtHeader"
@@ -29,10 +35,18 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dip"></ListView>
 
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/departuresLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="10dip">
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dip"
             android:gravity="center_vertical"
             android:text="@string/detail_departures" />
 
@@ -41,8 +55,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dip"></ListView>
+        </LinearLayout>
 
+    </ViewFlipper>
 
-    </LinearLayout>
 
 </RelativeLayout>
